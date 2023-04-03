@@ -49,9 +49,9 @@ while running:
         # If an arrow key is pressed, update the velocity of the ball accordingly
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                vx -= 1
+                vx -= 3
             elif event.key == pygame.K_RIGHT:
-                vx += 1
+                vx += 3
             elif event.key == pygame.K_UP:
                 vy -= 5
 
