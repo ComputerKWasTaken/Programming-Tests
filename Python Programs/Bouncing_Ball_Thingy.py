@@ -53,7 +53,7 @@ while running:
             elif event.key == pygame.K_RIGHT:
                 vx += 1
             elif event.key == pygame.K_UP:
-                vy -= 3
+                vy -= 5
 
     # Update the position of the ball using kinematics equations
     ball.x += vx # x = x + vx * dt (dt = 1)
