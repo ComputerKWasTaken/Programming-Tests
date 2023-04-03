@@ -5,7 +5,7 @@ import pygame
 pygame.init()
 clock = pygame.time.Clock()
 
-# Create a window with size 800x600
+# Create a window with size 800 x 600
 window = pygame.display.set_mode((800, 600))
 
 # Set the window title
@@ -21,7 +21,7 @@ ax = 0 # Horizontal acceleration
 ay = 0.2 # Vertical acceleration (gravity)
 
 # Define the coefficient of restitution (bounce factor)
-e = 0.8
+e = 0.75
 
 # Define a boolean variable to indicate if the game is running
 running = True
