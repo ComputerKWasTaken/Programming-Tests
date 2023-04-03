@@ -3,6 +3,7 @@ import pygame
 
 # Initialize pygame
 pygame.init()
+clock = pygame.time.Clock()
 
 # Create a window with size 800x600
 window = pygame.display.set_mode((800, 600))
@@ -30,6 +31,9 @@ while running:
     # Fill the window with black color
     window.fill((0, 0, 0))
 
+    # Slow the game down a little bit
+    clock.tick(100)
+
     # Draw the ball on the window
     pygame.draw.circle(window, (255, 0, 0), ball.center, ball.width // 2)
 
@@ -49,9 +53,7 @@ while running:
             elif event.key == pygame.K_RIGHT:
                 vx += 1
             elif event.key == pygame.K_UP:
-                vy -= 1
-            elif event.key == pygame.K_DOWN:
-                vy += 1
+                vy -= 3
 
     # Update the position of the ball using kinematics equations
     ball.x += vx # x = x + vx * dt (dt = 1)
