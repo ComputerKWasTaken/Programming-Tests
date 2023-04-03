@@ -14,8 +14,8 @@ pygame.display.set_caption("Bouncing Ball")
 ball = pygame.draw.circle(window, (255, 0, 0), (400, 300), 20)
 
 # Define the initial velocity and acceleration of the ball
-vx = 5 # Horizontal velocity
-vy = 0 # Vertical velocity
+vx = 0 # Horizontal velocity
+vy = 5 # Vertical velocity
 ax = 0 # Horizontal acceleration
 ay = 0.2 # Vertical acceleration (gravity)
 
@@ -41,6 +41,17 @@ while running:
         # If the user clicks the close button, exit the game loop
         if event.type == pygame.QUIT:
             running = False
+
+        # If an arrow key is pressed, update the velocity of the ball accordingly
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                vx -= 1
+            elif event.key == pygame.K_RIGHT:
+                vx += 1
+            elif event.key == pygame.K_UP:
+                vy -= 1
+            elif event.key == pygame.K_DOWN:
+                vy += 1
 
     # Update the position of the ball using kinematics equations
     ball.x += vx # x = x + vx * dt (dt = 1)
