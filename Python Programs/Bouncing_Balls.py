@@ -6,7 +6,7 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255) 
 WINDOW_WIDTH = 800 
 WINDOW_HEIGHT = 600 
-BALL_RADIUS = 20 
+BALL_RADIUS = 10 
 BALL_SPEED = 5 
 GRAVITY = 0.5 
  # Initialize pygame and create a window 
@@ -16,7 +16,7 @@ pygame.display.set_caption("Bouncing Balls")
 clock = pygame.time.Clock() 
  # Create a list of balls 
 balls = [] 
-for i in range(10): 
+for i in range(20): 
     # Randomize the position, direction and color of each ball 
     x = random.randint(BALL_RADIUS, WINDOW_WIDTH - BALL_RADIUS) 
     y = random.randint(BALL_RADIUS, WINDOW_HEIGHT - BALL_RADIUS) 
