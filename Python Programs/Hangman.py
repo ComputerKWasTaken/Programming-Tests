@@ -4,7 +4,7 @@
 import random
 
 # A list of words to choose from
-words = ["apple", "banana", "cat", "dog", "elephant", "fish", "giraffe", "hat", "ice", "joke", "kite", "lion", "mouse", "nest", "orange", "pear", "queen", "rainbow", "star", "tree", "umbrella", "vase", "water", "x-ray", "yarn", "zebra"]
+words = ["apple", "banana", "cat", "dog", "elephant", "fish", "giraffe", "hat", "ice", "joke", "kite", "lion", "mouse", "nest", "chicken" "orange", "pear", "queen", "rainbow", "star", "tree", "umbrella", "vase", "water", "x-ray", "yarn", "zebra"]
 
 # Pick a random word from the list
 word = random.choice(words)
