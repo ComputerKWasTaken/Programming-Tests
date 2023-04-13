@@ -47,6 +47,9 @@ while not is_over():
   # Ask the user to guess a letter
   letter = input("Guess a letter: ").lower()
 
+  # After guess, list already guessed letters
+  print("Already guessed:", ", ".join(guessed))
+
   # Check if the letter is valid and has not been guessed before
   if len(letter) != 1 or not letter.isalpha():
     print("Invalid input")
