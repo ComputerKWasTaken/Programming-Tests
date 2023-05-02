@@ -31,4 +31,4 @@ while guesses > 0:
         guesses -= 1
 
 if guesses == 0:
-    print(f"You lose! The pin was {pin}")
+    print(f"You lose! The correct pin was {pin}")
