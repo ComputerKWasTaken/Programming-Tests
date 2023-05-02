@@ -82,9 +82,9 @@ while running:
             ball1["dy"] += GRAVITY
             # Bounce the ball off the edges of the window with a coefficient of restitution of 1
             if ball1["x"] < ball_radius or ball1["x"] > WINDOW_WIDTH - ball_radius:
-                ball1["dx"] *= -1
+                ball1["dx"] *= -0.95
             if ball1["y"] < ball_radius or ball1["y"] > WINDOW_HEIGHT - ball_radius:
-                ball1["dy"] *= -1
+                ball1["dy"] *= -0.95
          # Check for collisions with other balls
         for j in range(i + 1, len(balls)):
             # Get another ball
