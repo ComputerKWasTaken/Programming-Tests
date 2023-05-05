@@ -42,11 +42,13 @@ while not game_over: # main game loop
     if score == target: # if the score matches the target number
         result_text = font.render("You win!", True, (0, 255, 0)) # create a text object for winning message
         window.blit(result_text, (200, 250)) # draw the winning message on the window
+        time.sleep(5) # wait for 5 seconds
         game_over = True # end the game loop
 
     if time_left <= 0: # if the time runs out
         result_text = font.render("You lose!", True, (255, 0, 0)) # create a text object for losing message
         window.blit(result_text, (200, 250)) # draw the losing message on the window
+        time.sleep(5) # wait for 5 seconds
         game_over = True # end the game loop
 
     pygame.display.flip() # update the display
