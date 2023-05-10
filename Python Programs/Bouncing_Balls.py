@@ -4,13 +4,13 @@ import math
  # Define some colors and constants
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
-WINDOW_WIDTH = 800
-WINDOW_HEIGHT = 600
+WINDOW_WIDTH = 1625
+WINDOW_HEIGHT = 1050
 BALL_SPEED = 5
 GRAVITY = 0.5
- # Get the number of balls and size from the user
-num_balls = int(input("Enter the number of balls: "))
-ball_radius = int(input("Enter the size of the balls: "))
+ # The number of balls and size
+num_balls = 50
+ball_radius = 15
  # Initialize pygame and create a window
 pygame.init()
 screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
@@ -82,9 +82,9 @@ while running:
             ball1["dy"] += GRAVITY
             # Bounce the ball off the edges of the window with a coefficient of restitution of 1
             if ball1["x"] < ball_radius or ball1["x"] > WINDOW_WIDTH - ball_radius:
-                ball1["dx"] *= -1
+                ball1["dx"] *= -0.99
             if ball1["y"] < ball_radius or ball1["y"] > WINDOW_HEIGHT - ball_radius:
-                ball1["dy"] *= -1
+                ball1["dy"] *= -0.99
          # Check for collisions with other balls
         for j in range(i + 1, len(balls)):
             # Get another ball
