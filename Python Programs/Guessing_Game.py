@@ -24,6 +24,9 @@ game_over = False
 
 player = input("Do you want to play or let the bot play? (Enter 'me' or 'bot'): ")
 
+# The list of previous guesses
+previous_guesses = []
+
 while not game_over:
     # The player's guess
     guess = get_guess(player)
@@ -37,21 +40,32 @@ while not game_over:
         print("You got it!")
         game_over = True
     else:
-        # The player loses a chance
-        chances -= 1
-
-        # Check if the player has no more chances
-        if chances == 0:
-            # The player loses
-            print(f"Sorry, the number was {number}.")
-            game_over = True
+        # Check if the guess is valid
+        if guess in previous_guesses:
+            print(f"You already guessed {guess}. Try again.")
+        elif guess < min_guess:
+            print(f"Your guess is below the minimum possible guess of {min_guess}. Try again.")
+        elif guess > max_guess:
+            print(f"Your guess is above the maximum possible guess of {max_guess}. Try again.")
         else:
-            # The player can try again
-            if guess < number:
-                print(f"Wrong. Your guess is too low. You have {chances} chances left.")
-                min_guess = guess + 1
+            # The player loses a chance
+            chances -= 1
+
+            # Check if the player has no more chances
+            if chances == 0:
+                # The player loses
+                print(f"Sorry, the number was {number}.")
+                game_over = True
             else:
-                print(f"Wrong. Your guess is too high. You have {chances} chances left.")
-                max_guess = guess - 1
+                # The player can try again
+                if guess < number:
+                    print(f"Wrong. Your guess is too low. You have {chances} chances left.")
+                    min_guess = guess + 1
+                else:
+                    print(f"Wrong. Your guess is too high. You have {chances} chances left.")
+                    max_guess = guess - 1
+
+            # Add the valid guess to the list of previous guesses
+            previous_guesses.append(guess)
 
     time.sleep(1.5)
