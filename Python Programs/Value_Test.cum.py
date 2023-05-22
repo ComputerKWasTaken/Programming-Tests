@@ -24,7 +24,7 @@ def calculate_value(position, shooting, passing, defending, goalkeeping):
     return value(rating)
 
 # Ask the user to input their position and stats
-position = input("Enter your position (ATT/MID/DEF/GK): ")
+position = input("Enter your position (ATT/MID/DEF/GK): ").upper()
 shooting = int(input("Enter your shooting: "))
 passing = int(input("Enter your passing: "))
 defending = int(input("Enter your defending: "))
