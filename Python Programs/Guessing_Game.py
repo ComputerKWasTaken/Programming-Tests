@@ -10,19 +10,22 @@ def get_guess(player):
 # The number to guess
 number = random.randint(1, 100)
 
+# The flag to indicate if the game is over
+game_over = False
+
+player = input("Do you want to play or let the bot play? (Enter 'me' or 'bot'): ")
+
 # The number of chances left
-chances = 10
+if player == "bot":
+    chances = 8
+else:
+    chances = 10
 
 # The minimum possible guess
 min_guess = 1
 
 # The maximum possible guess
 max_guess = 100
-
-# The flag to indicate if the game is over
-game_over = False
-
-player = input("Do you want to play or let the bot play? (Enter 'me' or 'bot'): ")
 
 # The list of previous guesses
 previous_guesses = []
