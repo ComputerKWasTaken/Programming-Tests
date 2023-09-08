@@ -1,114 +1,112 @@
+# Import the modules
 import pygame
 import random
 import math
- # Define some colors and constants
+
+# Initialize pygame
+pygame.init()
+
+# Define the colors
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
-WINDOW_WIDTH = 1625
-WINDOW_HEIGHT = 1050
-BALL_SPEED = 5
-GRAVITY = 0.5
- # The number of balls and size
-num_balls = 50
-ball_radius = 15
- # Initialize pygame and create a window
-pygame.init()
-screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-pygame.display.set_caption("Bouncing Balls")
-clock = pygame.time.Clock()
- # Create a list of balls
+
+# Define the screen size
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
+
+# Create the screen object
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
+# Set the title of the window
+pygame.display.set_caption("Bouncy Balls")
+
+# Define a class for the balls
+class Ball:
+    # Initialize the ball with its position, velocity, radius and color
+    def __init__(self, x, y, vx, vy, r, c):
+        self.x = x # x-coordinate of the center
+        self.y = y # y-coordinate of the center
+        self.vx = vx # x-component of the velocity
+        self.vy = vy # y-component of the velocity
+        self.r = r # radius of the ball
+        self.c = c # color of the ball
+
+    # Draw the ball on the screen
+    def draw(self):
+        pygame.draw.circle(screen, self.c, (self.x, self.y), self.r)
+
+    # Update the position and velocity of the ball
+    def update(self):
+        # Move the ball according to its velocity
+        self.x += self.vx
+        self.y += self.vy
+
+        # Apply gravity to the y-velocity of the ball
+        gravity = 0.1 # increase this value to make the balls fall faster 
+        self.vy += gravity
+
+        # Bounce the ball off the edges of the screen with some damping factor
+        damping = 0.9 # reduce this value to make the balls less bouncy
+        if self.x - self.r < 0 or self.x + self.r > SCREEN_WIDTH:
+            self.vx = -self.vx * damping
+        if self.y - self.r < 0 or self.y + self.r > SCREEN_HEIGHT:
+            self.vy = -self.vy * damping
+
+        # Get the mouse position
+        mx, my = pygame.mouse.get_pos()
+
+        # Calculate the distance between the ball and the mouse
+        dx = mx - self.x
+        dy = my - self.y
+        d = math.sqrt(dx**2 + dy**2)
+
+        # If the distance is less than a threshold, repel the ball away from the mouse with some scaling factor
+        threshold = 50 # reduce this value to make the repulsion range smaller 
+        if d < threshold:
+            # Calculate the unit vector in the direction of repulsion
+            ux = dx / d
+            uy = dy / d
+
+            # Apply a force proportional to the inverse square of the distance scaled by some factor
+            scale = 0.1 # reduce this value to make the balls less repelled by the mouse 
+            f = scale * 1000 / d**2
+
+            # Update the velocity of the ball according to the force
+            self.vx -= ux * f
+            self.vy -= uy * f
+
+# Create a list of balls with random attributes but fixed radius of 10 
 balls = []
-for i in range(num_balls):
-    # Randomize the position, direction and color of each ball
-    x = random.randint(ball_radius, WINDOW_WIDTH - ball_radius)
-    y = random.randint(ball_radius, WINDOW_HEIGHT - ball_radius)
-     # Check if the ball collides with another ball
-    while any(math.hypot(x - ball["x"], y - ball["y"]) < 2 * ball_radius for ball in balls):
-        x = random.randint(ball_radius, WINDOW_WIDTH - ball_radius)
-        y = random.randint(ball_radius, WINDOW_HEIGHT - ball_radius)
-    dx = random.choice([-1, 1]) * BALL_SPEED
-    dy = random.choice([-1, 1]) * BALL_SPEED
-    color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
-     # Create a dictionary to store the ball's attributes
-    ball = {
-        "x": x,
-        "y": y,
-        "dx": dx,
-        "dy": dy,
-        "color": color,
-        "dragged": False
-    }
-     # Add the ball to the list
-    balls.append(ball)
-def normalize_vector(vx, vy):
-    magnitude = math.hypot(vx, vy)
-    return vx/magnitude, vy/magnitude
- # Main loop
+for i in range(50):
+    x = random.randint(0, SCREEN_WIDTH) # random x-position
+    y = random.randint(0, SCREEN_HEIGHT) # random y-position
+    vx = random.randint(-5, 5) # random x-velocity
+    vy = random.randint(-5, 5) # random y-velocity
+    r = 10 # fixed radius 
+    c = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)) # random color
+    balls.append(Ball(x, y, vx, vy, r, c))
+
+# Define a variable to control the main loop
 running = True
+
+# Main loop
 while running:
-    # Handle events
+    # Handle events by looping over the list of Event objects returned by pygame.event.get()
     for event in pygame.event.get():
+        # If the user clicks on the close button, exit the loop and quit pygame 
         if event.type == pygame.QUIT:
-            # Quit the program
             running = False
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            # Check if any ball is clicked
-            for ball in balls:
-                # Get the distance between the mouse position and the ball's center
-                mouse_x, mouse_y = pygame.mouse.get_pos()
-                dist = math.hypot(mouse_x - ball["x"], mouse_y - ball["y"])
-                # If the distance is less than the ball's radius, set the ball as dragged
-                if dist < ball_radius:
-                    ball["dragged"] = True
-                    break
-        elif event.type == pygame.MOUSEBUTTONUP:
-            # Release any dragged ball
-            for ball in balls:
-                if ball["dragged"]:
-                    ball["dragged"] = False
-     # Update the state of each ball
-    for i in range(len(balls)):
-        # Get the current ball
-        ball1 = balls[i]
-        # If the ball is dragged, set its position to the mouse position
-        if ball1["dragged"]:
-            mouse_x, mouse_y = pygame.mouse.get_pos()
-            ball1["x"] = mouse_x
-            ball1["y"] = mouse_y
-        else:
-            # Move the ball according to its direction and add gravity
-            ball1["x"] += ball1["dx"]
-            ball1["y"] += ball1["dy"]
-            ball1["dy"] += GRAVITY
-            # Bounce the ball off the edges of the window with a coefficient of restitution of 1
-            if ball1["x"] < ball_radius or ball1["x"] > WINDOW_WIDTH - ball_radius:
-                ball1["dx"] *= -0.99
-            if ball1["y"] < ball_radius or ball1["y"] > WINDOW_HEIGHT - ball_radius:
-                ball1["dy"] *= -0.99
-         # Check for collisions with other balls
-        for j in range(i + 1, len(balls)):
-            # Get another ball
-            ball2 = balls[j]
-            # Get the distance between the two balls' centers
-            dist = math.hypot(ball1["x"] - ball2["x"], ball1["y"] - ball2["y"])
-            # If the distance is less than twice the radius, bounce them off each other
-            if dist < 2 * ball_radius:
-                # Get the collision vector
-                collision_vx, collision_vy = ball2["x"] - ball1["x"], ball2["y"] - ball1["y"]
-                collision_vx, collision_vy = normalize_vector(collision_vx, collision_vy)
-                # Compute the new velocities after collision
-                old_v1 = (ball1["dx"] * collision_vx) + (ball1["dy"] * collision_vy)
-                old_v2 = (ball2["dx"] * collision_vx) + (ball2["dy"] * collision_vy)
-                ball1["dx"] += (old_v2 - old_v1) * collision_vx
-                ball1["dy"] += (old_v2 - old_v1) * collision_vy
-                ball2["dx"] += (old_v1 - old_v2) * collision_vx
-                ball2["dy"] += (old_v1 - old_v2) * collision_vy
-     # Clear the screen and draw each ball
+
+    # Fill the screen with black color to erase previous drawings 
     screen.fill(BLACK)
+
+    # Loop over each ball in the list and update its state and draw it on the screen 
     for ball in balls:
-        pygame.draw.circle(screen, ball["color"], (int(ball["x"]), int(ball["y"])), ball_radius)
-     # Update the display and limit the frame rate
+        ball.update()
+        ball.draw()
+
+    # Update the display with what has been drawn 
     pygame.display.flip()
-    clock.tick(60)
- # Close the window and quit the program
+
+# Quit pygame 
 pygame.quit()
