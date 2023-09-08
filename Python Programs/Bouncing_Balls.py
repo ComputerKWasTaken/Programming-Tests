@@ -52,29 +52,6 @@ class Ball:
         if self.y - self.r < 0 or self.y + self.r > SCREEN_HEIGHT:
             self.vy = -self.vy * damping
 
-        # Get the mouse position
-        mx, my = pygame.mouse.get_pos()
-
-        # Calculate the distance between the ball and the mouse
-        dx = mx - self.x
-        dy = my - self.y
-        d = math.sqrt(dx**2 + dy**2)
-
-        # If the distance is less than a threshold, repel the ball away from the mouse with some scaling factor
-        threshold = 50 # reduce this value to make the repulsion range smaller 
-        if d < threshold:
-            # Calculate the unit vector in the direction of repulsion
-            ux = dx / d
-            uy = dy / d
-
-            # Apply a force proportional to the inverse square of the distance scaled by some factor
-            scale = 0.1 # reduce this value to make the balls less repelled by the mouse 
-            f = scale * 1000 / d**2
-
-            # Update the velocity of the ball according to the force
-            self.vx -= ux * f
-            self.vy -= uy * f
-
 # Create a list of balls with random attributes but fixed radius of 10 
 balls = []
 for i in range(50):
@@ -88,6 +65,12 @@ for i in range(50):
 
 # Define a variable to control the main loop
 running = True
+
+# Create a clock object to control the frame rate 
+clock = pygame.time.Clock()
+
+# Get the initial position of the window 
+window_x, window_y = pygame.display.get_window_position()
 
 # Main loop
 while running:
@@ -107,6 +90,22 @@ while running:
 
     # Update the display with what has been drawn 
     pygame.display.flip()
+
+    # Limit the frame rate to 60 FPS 
+    clock.tick(120)
+
+    # Get the current position of the window 
+    new_window_x, new_window_y = pygame.display.get_window_position()
+
+    # If the window has moved, adjust the positions of all balls accordingly 
+    if new_window_x != window_x or new_window_y != window_y:
+        for ball in balls:
+            ball.x += new_window_x - window_x
+            ball.y += new_window_y - window_y
+
+        # Update the window position 
+        window_x = new_window_x
+        window_y = new_window_y
 
 # Quit pygame 
 pygame.quit()
