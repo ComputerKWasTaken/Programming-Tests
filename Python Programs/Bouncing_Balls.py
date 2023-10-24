@@ -92,4 +92,3 @@ while True:
 
     # --- Limit to 60 frames per second
     clock.tick(60)
-
