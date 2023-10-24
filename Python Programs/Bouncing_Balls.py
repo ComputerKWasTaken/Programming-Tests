@@ -22,11 +22,11 @@ restitution = 0.95
 # Ball class
 class Ball:
     def __init__(self):
-        self.x = random.randint(min_ball_size, size[0] - min_ball_size)
-        self.y = random.randint(min_ball_size, size[1] - min_ball_size)
-        self.change_x = random.randint(-3, 3)
-        self.change_y = random.randint(-3, 3)
         self.size = random.randint(min_ball_size, max_ball_size)
+        self.x = random.randint(self.size, size[0] - self.size)
+        self.y = random.randint(self.size, size[1] - self.size)
+        self.change_x = random.uniform(-3, 3)
+        self.change_y = random.uniform(-3, 3)
         self.color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
 
     def draw(self):
@@ -48,7 +48,11 @@ class Ball:
 
 balls = []
 for i in range(num_balls):
-    balls.append(Ball())
+    while True:
+        new_ball = Ball()
+        if not any(math.hypot(ball.x - new_ball.x, ball.y - new_ball.y) < ball.size + new_ball.size for ball in balls):
+            balls.append(new_ball)
+            break
 
 # -------- Main Program Loop -----------
 while True:
