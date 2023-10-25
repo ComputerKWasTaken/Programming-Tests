@@ -17,14 +17,14 @@ gravity = 0.1
 num_balls = 25
 min_ball_size = 15
 max_ball_size = 25
-restitution = 0.95
+restitution = 1
 
 # Ball class
 class Ball:
-    def __init__(self):
+    def __init__(self, x=None, y=None):
         self.size = random.randint(min_ball_size, max_ball_size)
-        self.x = random.randint(self.size, size[0] - self.size)
-        self.y = random.randint(self.size, size[1] - self.size)
+        self.x = x if x is not None else random.randint(self.size, size[0] - self.size)
+        self.y = y if y is not None else random.randint(self.size, size[1] - self.size)
         self.change_x = random.uniform(-3, 3)
         self.change_y = random.uniform(-3, 3)
         self.color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
