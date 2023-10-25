@@ -13,22 +13,21 @@ screen = pygame.display.set_mode(size)
 clock = pygame.time.Clock()
 
 # Set gravity, number of balls, min and max ball size, and coefficient of restitution
-gravity = 0.15
+gravity = 0.1
 num_balls = 25
 min_ball_size = 15
 max_ball_size = 25
-restitution = 1
+restitution = 0.95
 
 # Ball class
 class Ball:
-    def __init__(self):
+    def __init__(self, x=None, y=None):
         self.size = random.randint(min_ball_size, max_ball_size)
-        self.x = random.randint(self.size, size[0] - self.size)
-        self.y = random.randint(self.size, size[1] - self.size)
+        self.x = x if x is not None else random.randint(self.size, size[0] - self.size)
+        self.y = y if y is not None else random.randint(self.size, size[1] - self.size)
         self.change_x = random.uniform(-3, 3)
         self.change_y = random.uniform(-3, 3)
-        # Having the minimum random number color be 25 prevents balls that are too difficult to see (too dark)
-        self.color = (random.randint(25, 255), random.randint(25, 255), random.randint(25, 255))
+        self.color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
 
     def draw(self):
         pygame.draw.circle(screen, self.color, [self.x, self.y], self.size)
@@ -55,11 +54,36 @@ for i in range(num_balls):
             balls.append(new_ball)
             break
 
+dragging = False
+dragged_ball = None
+
 # -------- Main Program Loop -----------
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
+        
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_pos = pygame.mouse.get_pos()
+            for ball in balls:
+                if math.hypot(ball.x - mouse_pos[0], ball.y - mouse_pos[1]) < ball.size:
+                    dragging = True
+                    dragged_ball = ball
+                    break
+        
+        elif event.type == pygame.MOUSEBUTTONUP:
+            dragging = False
+            dragged_ball = None
+        
+        elif event.type == pygame.KEYDOWN:
+            mouse_pos = pygame.mouse.get_pos()
+            if event.key == pygame.K_o:
+                balls.append(Ball(*mouse_pos))
+            elif event.key == pygame.K_p:
+                for ball in balls:
+                    if math.hypot(ball.x - mouse_pos[0], ball.y - mouse_pos[1]) < ball.size:
+                        balls.remove(ball)
+                        break
 
     # --- Game logic should go here
 
@@ -91,6 +115,11 @@ while True:
                 balls[i].change_y = new_speed_i_y * math.cos(angle) + new_speed_i_x * math.sin(angle)
                 balls[j].change_x = new_speed_j_x * math.cos(angle) - new_speed_j_y * math.sin(angle)
                 balls[j].change_y = new_speed_j_y * math.cos(angle) + new_speed_j_x * math.sin(angle)
+
+    if dragging and dragged_ball:
+        mouse_pos = pygame.mouse.get_pos()
+        dragged_ball.x = mouse_pos[0]
+        dragged_ball.y = mouse_pos[1]
 
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
