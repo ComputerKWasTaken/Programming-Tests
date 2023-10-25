@@ -27,7 +27,8 @@ class Ball:
         self.y = y if y is not None else random.randint(self.size, size[1] - self.size)
         self.change_x = random.uniform(-3, 3)
         self.change_y = random.uniform(-3, 3)
-        self.color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+        # Min color randint is 25 so it prevents it from being too dark to see
+        self.color = (random.randint(25, 255), random.randint(25, 255), random.randint(25, 255))
 
     def draw(self):
         pygame.draw.circle(screen, self.color, [self.x, self.y], self.size)
