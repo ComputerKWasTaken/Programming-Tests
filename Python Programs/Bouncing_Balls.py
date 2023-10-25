@@ -13,11 +13,11 @@ screen = pygame.display.set_mode(size)
 clock = pygame.time.Clock()
 
 # Set gravity, number of balls, min and max ball size, and coefficient of restitution
-gravity = 0.1
+gravity = 0.15
 num_balls = 25
 min_ball_size = 15
 max_ball_size = 25
-restitution = 0.95
+restitution = 1
 
 # Ball class
 class Ball:
