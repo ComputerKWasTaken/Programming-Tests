@@ -6,8 +6,8 @@ import math
 BLACK = (0, 0, 0)
 
 # Set the width and height of the screen [width, height]
-size = (700, 500)
-screen = pygame.display.set_mode(size)
+size = [700, 500]
+screen = pygame.display.set_mode(size, pygame.RESIZABLE)
 
 # Used to manage how fast the screen updates
 clock = pygame.time.Clock()
@@ -21,10 +21,10 @@ restitution = 0.95
 
 # Ball class
 class Ball:
-    def __init__(self, x=None, y=None):
+    def __init__(self):
         self.size = random.randint(min_ball_size, max_ball_size)
-        self.x = x if x is not None else random.randint(self.size, size[0] - self.size)
-        self.y = y if y is not None else random.randint(self.size, size[1] - self.size)
+        self.x = random.randint(self.size, size[0] - self.size)
+        self.y = random.randint(self.size, size[1] - self.size)
         self.change_x = random.uniform(-3, 3)
         self.change_y = random.uniform(-3, 3)
         self.color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
@@ -84,6 +84,10 @@ while True:
                     if math.hypot(ball.x - mouse_pos[0], ball.y - mouse_pos[1]) < ball.size:
                         balls.remove(ball)
                         break
+        
+        elif event.type == pygame.VIDEORESIZE:
+            size[0] = event.w
+            size[1] = event.h
 
     # --- Game logic should go here
 
