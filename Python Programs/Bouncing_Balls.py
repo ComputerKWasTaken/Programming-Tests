@@ -17,18 +17,17 @@ gravity = 0.1
 num_balls = 25
 min_ball_size = 15
 max_ball_size = 25
-restitution = 1
+restitution = 0.95
 
 # Ball class
 class Ball:
-    def __init__(self, x=None, y=None):
+    def __init__(self):
         self.size = random.randint(min_ball_size, max_ball_size)
-        self.x = x if x is not None else random.randint(self.size, size[0] - self.size)
-        self.y = y if y is not None else random.randint(self.size, size[1] - self.size)
+        self.x = random.randint(self.size, size[0] - self.size)
+        self.y = random.randint(self.size, size[1] - self.size)
         self.change_x = random.uniform(-3, 3)
         self.change_y = random.uniform(-3, 3)
-        # Min color randint is 25 so it prevents it from being too dark to see
-        self.color = (random.randint(25, 255), random.randint(25, 255), random.randint(25, 255))
+        self.color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
 
     def draw(self):
         pygame.draw.circle(screen, self.color, [self.x, self.y], self.size)
@@ -47,13 +46,17 @@ class Ball:
             self.y = size[1] - self.size
             self.change_y *= -restitution
 
-balls = []
-for i in range(num_balls):
-    while True:
-        new_ball = Ball()
-        if not any(math.hypot(ball.x - new_ball.x, ball.y - new_ball.y) < ball.size + new_ball.size for ball in balls):
-            balls.append(new_ball)
-            break
+def create_balls():
+    balls = []
+    for i in range(num_balls):
+        while True:
+            new_ball = Ball()
+            if not any(math.hypot(ball.x - new_ball.x, ball.y - new_ball.y) < ball.size + new_ball.size for ball in balls):
+                balls.append(new_ball)
+                break
+    return balls
+
+balls = create_balls()
 
 dragging = False
 dragged_ball = None
@@ -79,12 +82,16 @@ while True:
         elif event.type == pygame.KEYDOWN:
             mouse_pos = pygame.mouse.get_pos()
             if event.key == pygame.K_o:
-                balls.append(Ball(*mouse_pos))
+                balls.append(Ball())
             elif event.key == pygame.K_p:
                 for ball in balls:
                     if math.hypot(ball.x - mouse_pos[0], ball.y - mouse_pos[1]) < ball.size:
                         balls.remove(ball)
                         break
+            
+            elif event.key == pygame.K_r:
+                balls.clear()
+                balls.extend(create_balls())
         
         elif event.type == pygame.VIDEORESIZE:
             size[0] = event.w
