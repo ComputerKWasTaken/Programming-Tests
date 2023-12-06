@@ -80,10 +80,15 @@ while True:
             dragged_ball = None
         
         elif event.type == pygame.KEYDOWN:
-            mouse_pos = pygame.mouse.get_pos()
             if event.key == pygame.K_o:
-                balls.append(Ball())
+                while True:
+                    new_ball = Ball()
+                    if not any(math.hypot(ball.x - new_ball.x, ball.y - new_ball.y) < ball.size + new_ball.size for ball in balls):
+                        balls.append(new_ball)
+                        break
+            
             elif event.key == pygame.K_p:
+                mouse_pos = pygame.mouse.get_pos()
                 for ball in balls:
                     if math.hypot(ball.x - mouse_pos[0], ball.y - mouse_pos[1]) < ball.size:
                         balls.remove(ball)
