@@ -8,14 +8,54 @@ pygame.init()
 WIDTH, HEIGHT = 600, 500
 BACKGROUND_COLOR = pygame.Color('black')
 CIRCLE_COLOR = pygame.Color('white')
-NUM_CIRCLES = 10
 MAX_DISTANCE = math.sqrt(WIDTH**2 + HEIGHT**2)
 
 # Create the window
 window = pygame.display.set_mode((WIDTH, HEIGHT))
 
+# Create a font object
+font = pygame.font.Font(None, 32)
+
+# Create a text input box
+input_box = pygame.Rect(WIDTH // 2, HEIGHT // 2, 140, 32)
+text = ''
+active = False
+
+# Game loop
+running = True
+while running:
+    # Event loop
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if input_box.collidepoint(event.pos):
+                active = not active
+            else:
+                active = False
+        if event.type == pygame.KEYDOWN:
+            if active:
+                if event.key == pygame.K_RETURN:
+                    num_circles = int(text)
+                    running = False
+                elif event.key == pygame.K_BACKSPACE:
+                    text = text[:-1]
+                else:
+                    text += event.unicode
+
+    # Fill the background
+    window.fill(BACKGROUND_COLOR)
+
+    # Draw the input box
+    pygame.draw.rect(window, CIRCLE_COLOR, input_box, 2)
+    txt_surface = font.render(text, True, CIRCLE_COLOR)
+    window.blit(txt_surface, (input_box.x+5, input_box.y+5))
+
+    # Update the display
+    pygame.display.flip()
+
 # Create a list of circles
-circles = [(i * WIDTH // NUM_CIRCLES, j * HEIGHT // NUM_CIRCLES) for i in range(NUM_CIRCLES) for j in range(NUM_CIRCLES)]
+circles = [(i * WIDTH // num_circles, j * HEIGHT // num_circles) for i in range(num_circles) for j in range(num_circles)]
 
 # Game loop
 running = True
