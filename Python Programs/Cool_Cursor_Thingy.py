@@ -20,6 +20,7 @@ font = pygame.font.Font(None, 32)
 input_box = pygame.Rect(WIDTH // 2, HEIGHT // 2, 140, 32)
 text = ''
 active = False
+num_circles = 10  # Initialize num_circles with a default value
 
 # Game loop
 running = True
