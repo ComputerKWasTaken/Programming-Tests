@@ -43,7 +43,7 @@ while running:
         distance = math.sqrt((x - mouse_pos[0])**2 + (y - mouse_pos[1])**2)
 
         # Calculate the color based on the distance
-        color = int(255 * (1 - (distance / MAX_DISTANCE)**2))  # Increase the magnitude of the inverse square law
+        color = min(int(255 * (1 - (distance / MAX_DISTANCE)**2)), 255)  # Ensure color does not exceed 255
 
         # Draw the circle
         pygame.draw.circle(window, (color, color, color), (x, y), 20)
