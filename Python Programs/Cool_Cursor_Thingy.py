@@ -11,10 +11,10 @@ CIRCLE_COLOR = pygame.Color('white')
 MAX_DISTANCE = math.sqrt(WIDTH**2 + HEIGHT**2)
 
 # Create the window
-window = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)  # Make the window resizable
+window = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)  # Make the window resizable and constraint it to the screen
 
 # Set the number of circles
-num_circles = 10  # Change this value for testing
+num_circles = 10 # Adjust this value to change the number of circles
 
 # Create a list of circles
 circles = [(i * WIDTH // (num_circles-1), j * HEIGHT // (num_circles-1)) for i in range(num_circles) for j in range(num_circles)]
@@ -29,6 +29,7 @@ while running:
         elif event.type == pygame.VIDEORESIZE:  # The window has been resized
             WIDTH, HEIGHT = event.w, event.h
             MAX_DISTANCE = math.sqrt(WIDTH**2 + HEIGHT**2)
+            # Spread the circles across the width and height of the window
             circles = [(i * WIDTH // (num_circles-1), j * HEIGHT // (num_circles-1)) for i in range(num_circles) for j in range(num_circles)]
 
     # Fill the background
