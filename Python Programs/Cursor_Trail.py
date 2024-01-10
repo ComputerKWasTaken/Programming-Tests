@@ -10,8 +10,8 @@ WIDTH, HEIGHT = 800, 600
 BACKGROUND_COLOR = (0, 0, 0)
 CIRCLE_COLOR = (255, 255, 255)
 CIRCLE_RADIUS = 5
-FADEOUT_TIME = 500  # in milliseconds
-FALL_SPEED = 0.5  # pixels per millisecond
+FADEOUT_TIME = 1000  # in milliseconds
+FALL_SPEED = 0.2  # pixels per millisecond
 
 # Create the window
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -34,7 +34,7 @@ while True:
     mouse_pos = pygame.mouse.get_pos()
 
     # Add a new circle at the mouse position with random fall speed and fadeout time
-    circles.append([list(mouse_pos), pygame.time.get_ticks(), random.uniform(0.3, 1.0), random.randint(300, 700)])
+    circles.append([list(mouse_pos), pygame.time.get_ticks(), random.uniform(0.1, 0.5), random.randint(500, 1500)])
 
     # Draw the background
     screen.fill(BACKGROUND_COLOR)
