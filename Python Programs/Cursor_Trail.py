@@ -10,8 +10,8 @@ WIDTH, HEIGHT = 800, 600
 BACKGROUND_COLOR = (0, 0, 0)
 CIRCLE_COLOR = (255, 255, 255)
 CIRCLE_RADIUS = 5
-FADEOUT_TIME = 1500  # in milliseconds
-FALL_SPEED = 0.1  # pixels per millisecond
+FADEOUT_TIME = 1000  # in milliseconds
+FALL_SPEED = 0.2  # pixels per millisecond
 
 # Create the window
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -20,8 +20,8 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 circles = []
 
 # Easing function
-def ease_out(t):
-    return t * (2 - t)
+def ease_out_expo(t):
+    return (2 ** (10 * (t - 1)))
 
 # Main game loop
 while True:
@@ -34,7 +34,7 @@ while True:
     mouse_pos = pygame.mouse.get_pos()
 
     # Add a new circle at the mouse position with random fall speed and fadeout time
-    circles.append([list(mouse_pos), pygame.time.get_ticks(), random.uniform(0.1, 0.2), random.randint(1000, 2000)])
+    circles.append([list(mouse_pos), pygame.time.get_ticks(), random.uniform(0.1, 0.5), random.randint(500, 1500)])
 
     # Draw the background
     screen.fill(BACKGROUND_COLOR)
@@ -49,13 +49,16 @@ while True:
             circles.remove(circle)
         else:
             # Otherwise, draw the circle with an alpha value based on its age
-            alpha = 255 - (255 * time_alive / fadeout_time)
+            alpha = int(255 - (255 * time_alive / fadeout_time))
             faded_color = CIRCLE_COLOR + (alpha,)
 
             # Apply the easing function to the y position
-            pos[1] += fall_speed * time_alive * ease_out(time_alive / fadeout_time)
+            pos[1] += fall_speed * time_alive * ease_out_expo(time_alive / fadeout_time)
 
-            pygame.draw.circle(screen, faded_color, [int(x) for x in pos], CIRCLE_RADIUS)
+            # Create a temporary surface, draw the circle on it, and then blit it onto the main screen with the alpha value
+            temp_surface = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
+            pygame.draw.circle(temp_surface, faded_color, [int(x) for x in pos], CIRCLE_RADIUS)
+            screen.blit(temp_surface, (0, 0))
 
     # Update the display
     pygame.display.flip()
